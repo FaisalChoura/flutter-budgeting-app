@@ -1,3 +1,4 @@
+import 'package:budget_app/widgets/bottom_nav.dart';
 import 'package:budget_app/widgets/month_card.dart';
 import 'package:budget_app/widgets/year_chart.dart';
 import 'package:flutter/material.dart';
@@ -120,6 +121,30 @@ class _YearViewScreenState extends State<YearViewScreen> {
         ],
       ),
       extendBodyBehindAppBar: true,
+      extendBody: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        elevation: 0,
+        backgroundColor: Color.fromARGB(255, 31, 109, 255),
+        child: Center(
+          child: Icon(
+            Icons.add,
+            size: 32.0,
+          ),
+        ),
+        onPressed: () {},
+      ),
+      bottomNavigationBar: BottomNav(
+        color: Color.fromARGB(255, 82, 89, 102),
+        selectedColor: Color.fromARGB(255, 31, 109, 255),
+        onTabSelected: (index) {
+          print(index);
+        },
+        items: [
+          BottomNavItem(iconData: Icons.dashboard, text: 'Spendings'),
+          BottomNavItem(iconData: Icons.account_circle, text: 'Profile'),
+        ],
+      ),
     );
   }
 
