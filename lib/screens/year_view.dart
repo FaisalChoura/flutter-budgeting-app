@@ -1,3 +1,4 @@
+import 'package:budget_app/services/auth.dart';
 import 'package:budget_app/widgets/bottom_nav.dart';
 import 'package:budget_app/widgets/month_card.dart';
 import 'package:budget_app/widgets/year_chart.dart';
@@ -15,6 +16,8 @@ class _YearViewScreenState extends State<YearViewScreen> {
   bool _visible = false;
   double budgetFontSize = 48;
   double budgetColPadding = 130;
+
+  AuthService auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +135,10 @@ class _YearViewScreenState extends State<YearViewScreen> {
             size: 32.0,
           ),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          await auth.signOut();
+          Navigator.pushReplacementNamed(context, '/');
+        },
       ),
       bottomNavigationBar: BottomNav(
         color: Color.fromARGB(255, 82, 89, 102),
