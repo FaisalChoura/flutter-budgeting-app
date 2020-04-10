@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "132702552365",
+    "firebase_url": "https://budget-app-c90bf.firebaseio.com",
+    "project_id": "budget-app-c90bf",
+    "storage_bucket": "budget-app-c90bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132702552365:android:8d56423d0d38692b6a93a4",
+        "android_client_info": {
+          "package_name": "com.refactord.budgetapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "132702552365-tfqe4ck4h050iknacr0l4ruaq5pmtf7o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzRMi3zV7oW3086qJmk9-akFeJJePuonA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "132702552365-tfqe4ck4h050iknacr0l4ruaq5pmtf7o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "132702552365-dambtiocphs2pl68tnbmto8d63tcl1uj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.refactord.budgetapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
