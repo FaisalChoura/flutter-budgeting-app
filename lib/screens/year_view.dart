@@ -1,8 +1,13 @@
 import 'package:budget_app/services/auth.dart';
+import 'package:budget_app/services/helpers.dart';
+import 'package:budget_app/services/models.dart';
+import 'package:budget_app/services/db.dart';
 import 'package:budget_app/widgets/bottom_nav.dart';
 import 'package:budget_app/widgets/month_card.dart';
 import 'package:budget_app/widgets/year_chart.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class YearViewScreen extends StatefulWidget {
   const YearViewScreen({Key key}) : super(key: key);
@@ -18,12 +23,22 @@ class _YearViewScreenState extends State<YearViewScreen> {
   double budgetColPadding = 130;
 
   AuthService auth = AuthService();
+  List<Month> months = [];
+  TransactionsService transactionsService;
+
+  String year = '2019';
+
   @override
   Widget build(BuildContext context) {
+    FirebaseUser user = Provider.of<FirebaseUser>(context);
+    if (user != null) {
+      transactionsService = TransactionsService(uid: user.uid);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '2020',
+          year,
           style: TextStyle(fontSize: 24),
         ),
         elevation: 0,
@@ -113,11 +128,36 @@ class _YearViewScreenState extends State<YearViewScreen> {
                   ),
                 ],
               ),
-              child: ListView(
-                padding: EdgeInsets.all(16),
-                children: <Widget>[
-                  MonthCard(),
-                ],
+              child: FutureBuilder(
+                future: transactionsService.transactionsByear(2020),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      child: Center(
+                        child: Text('Loading...'),
+                      ),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Container(
+                      child: Center(
+                        child: Text('Error...'),
+                      ),
+                    );
+                  }
+                  List<Month> months =
+                      snapshot.hasData ? buildMonthsList(snapshot.data) : null;
+                  return ListView.builder(
+                    padding: EdgeInsets.all(16),
+                    itemCount: months.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 4),
+                        child: MonthCard(month: months[index]),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ),

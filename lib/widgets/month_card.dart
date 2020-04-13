@@ -1,9 +1,13 @@
+import 'package:budget_app/services/models.dart';
 import 'package:flutter/material.dart';
 
 class MonthCard extends StatelessWidget {
-  const MonthCard({
-    Key key,
-  }) : super(key: key);
+  Month month;
+
+  // TODO Need to add key here
+  MonthCard({
+    this.month,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +41,11 @@ class MonthCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Jan',
+                  month.name,
                   style: TextStyle(fontSize: 18),
                 ),
                 Text(
-                  '£1200',
+                  '£ ${month.amount}',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
