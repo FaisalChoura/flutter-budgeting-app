@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
     auth.getUser.then(
       (user) {
         if (user != null) {
-          Navigator.pushReplacementNamed(context, '/year_view');
+          Navigator.pushReplacementNamed(context, '/home');
         }
       },
     );
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () async {
               var user = await auth.googleSignIn();
               if (user != null) {
-                Navigator.pushReplacementNamed(context, '/year_view');
+                Navigator.pushReplacementNamed(context, '/home');
               }
             },
           ),
