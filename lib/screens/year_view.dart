@@ -8,29 +8,41 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class YearViewScreen extends StatefulWidget {
-  const YearViewScreen({Key key}) : super(key: key);
+class YearViewScreen extends StatelessWidget {
+  final TransactionsService transactionsService = TransactionsService();
+
+  YearViewScreen({Key key}) : super(key: key);
 
   @override
-  _YearViewScreenState createState() => _YearViewScreenState();
+  Widget build(BuildContext context) {
+    FirebaseUser user = Provider.of<FirebaseUser>(context);
+    return StreamProvider<List<BTransaction>>.value(
+      value: transactionsService.streamTransactionPerYear(user, 2020),
+      child: YearViewUI(),
+    );
+  }
 }
 
-class _YearViewScreenState extends State<YearViewScreen> {
+class YearViewUI extends StatefulWidget {
+  YearViewUI({Key key}) : super(key: key);
+
+  @override
+  _YearViewUIState createState() => _YearViewUIState();
+}
+
+class _YearViewUIState extends State<YearViewUI> {
   double _height = 0.0;
   bool _visible = false;
   double budgetFontSize = 48;
   double budgetColPadding = 130;
 
-  AuthService auth = AuthService();
-  List<Month> months = [];
-  TransactionsService transactionsService = TransactionsService();
+  List<Month> months;
 
   String year = '2019';
 
   @override
   Widget build(BuildContext context) {
-    FirebaseUser user = Provider.of<FirebaseUser>(context);
-
+    months = buildMonthsList(Provider.of<List<BTransaction>>(context));
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -124,35 +136,13 @@ class _YearViewScreenState extends State<YearViewScreen> {
                   ),
                 ],
               ),
-              child: StreamBuilder(
-                stream:
-                    transactionsService.streamTransactionPerYear(user, 2020),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
-                      child: Center(
-                        child: Text('Loading...'),
-                      ),
-                    );
-                  }
-                  if (snapshot.hasError) {
-                    return Container(
-                      child: Center(
-                        child: Text('Error...'),
-                      ),
-                    );
-                  }
-                  List<Month> months =
-                      snapshot.hasData ? buildMonthsList(snapshot.data) : null;
-                  return ListView.builder(
-                    padding: EdgeInsets.all(16),
-                    itemCount: months.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 4),
-                        child: MonthCard(month: months[index]),
-                      );
-                    },
+              child: ListView.builder(
+                padding: EdgeInsets.all(16),
+                itemCount: months.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 4),
+                    child: MonthCard(month: months[index]),
                   );
                 },
               ),
