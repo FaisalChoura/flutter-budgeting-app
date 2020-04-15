@@ -2,7 +2,6 @@ import 'package:budget_app/services/auth.dart';
 import 'package:budget_app/services/helpers.dart';
 import 'package:budget_app/services/models.dart';
 import 'package:budget_app/services/db.dart';
-import 'package:budget_app/widgets/bottom_nav.dart';
 import 'package:budget_app/widgets/month_card.dart';
 import 'package:budget_app/widgets/year_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,16 +23,13 @@ class _YearViewScreenState extends State<YearViewScreen> {
 
   AuthService auth = AuthService();
   List<Month> months = [];
-  TransactionsService transactionsService;
+  TransactionsService transactionsService = TransactionsService();
 
   String year = '2019';
 
   @override
   Widget build(BuildContext context) {
     FirebaseUser user = Provider.of<FirebaseUser>(context);
-    if (user != null) {
-      transactionsService = TransactionsService(uid: user.uid);
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -128,8 +124,9 @@ class _YearViewScreenState extends State<YearViewScreen> {
                   ),
                 ],
               ),
-              child: FutureBuilder(
-                future: transactionsService.transactionsByear(2020),
+              child: StreamBuilder(
+                stream:
+                    transactionsService.streamTransactionPerYear(user, 2020),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(

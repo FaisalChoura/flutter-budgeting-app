@@ -12,12 +12,29 @@ class LayoutScreen extends StatefulWidget {
 
 class _LayoutScreenState extends State<LayoutScreen> {
   int _currentIndex = 0;
-  List<Widget> _children = [YearViewScreen(), ProfileScreen()];
+  List<Widget> _pages = [YearViewScreen(), ProfileScreen()];
+
+  Stack _buildStackedPages() {
+    List<Widget> children = [];
+    _pages.asMap().forEach((index, value) {
+      children.add(
+        Offstage(
+          offstage: _currentIndex != index,
+          child: TickerMode(
+            enabled: _currentIndex == index,
+            child: value,
+          ),
+        ),
+      );
+    });
+
+    return Stack(children: children);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: _buildStackedPages(),
       extendBodyBehindAppBar: true,
       extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
