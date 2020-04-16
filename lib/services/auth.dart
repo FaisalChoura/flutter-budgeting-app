@@ -6,7 +6,6 @@ import 'dart:async';
 class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Firestore _db = Firestore.instance;
 
   Future<FirebaseUser> get getUser => _auth.currentUser();
 
