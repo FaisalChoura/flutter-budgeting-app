@@ -1,4 +1,4 @@
-import 'package:budget_app/services/models.dart';
+import 'package:budget_app/models/models.dart';
 
 class Global {
   static final String title = 'Budget App';

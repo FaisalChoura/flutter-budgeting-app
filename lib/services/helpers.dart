@@ -1,4 +1,4 @@
-import 'models.dart';
+import 'package:budget_app/models/models.dart';
 
 List<String> monthsOfTheYear = [
   'Jan',

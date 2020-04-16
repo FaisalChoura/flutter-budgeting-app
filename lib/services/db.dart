@@ -1,4 +1,4 @@
-import 'package:budget_app/services/models.dart';
+import 'package:budget_app/models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

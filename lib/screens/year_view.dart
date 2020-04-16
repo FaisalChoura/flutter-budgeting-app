@@ -1,43 +1,12 @@
+import 'package:budget_app/providers/year_view_provider.dart';
 import 'package:budget_app/services/helpers.dart';
-import 'package:budget_app/services/models.dart';
+import 'package:budget_app/models/models.dart';
 import 'package:budget_app/services/db.dart';
 import 'package:budget_app/widgets/month_card.dart';
 import 'package:budget_app/widgets/year_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-class YearViewState extends ChangeNotifier {
-  double _height = 0.0;
-  bool _visible = false;
-  double _budgetFontSize = 48;
-  double _budgetColPadding = 130;
-
-  get height => _height;
-  get visible => _visible;
-  get budgetFontSize => _budgetFontSize;
-  get budgetColPadding => _budgetColPadding;
-
-  set height(double h) {
-    _height = h;
-    notifyListeners();
-  }
-
-  set visible(bool v) {
-    _visible = v;
-    notifyListeners();
-  }
-
-  set budgetFontSize(double fontsize) {
-    _budgetFontSize = fontsize;
-    notifyListeners();
-  }
-
-  set budgetColPadding(double padding) {
-    _budgetColPadding = padding;
-    notifyListeners();
-  }
-}
 
 class YearViewScreen extends StatelessWidget {
   final TransactionsService transactionsService = TransactionsService();
@@ -50,15 +19,15 @@ class YearViewScreen extends StatelessWidget {
     return StreamBuilder(
       stream: transactionsService.streamTransactionPerYear(user, 2020),
       builder: (context, snap) {
-        List<Month> months = buildMonthsList(snap.data);
         if (snap.connectionState == ConnectionState.waiting) {
           return Center(
             child: Text('Loading'),
           );
         }
-        return ChangeNotifierProvider<YearViewState>(
-          create: (_) => YearViewState(),
-          child: Consumer<YearViewState>(
+        List<Month> months = buildMonthsList(snap.data);
+        return ChangeNotifierProvider<YearViewProvider>(
+          create: (_) => YearViewProvider(),
+          child: Consumer<YearViewProvider>(
             builder: (context, yearViewState, child) => Scaffold(
               appBar: YearViewAppBar(year: year),
               body: Stack(
@@ -128,7 +97,7 @@ class AnimatedTotalSpendings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<YearViewState>(
+    return Consumer<YearViewProvider>(
       builder: (context, yearViewState, child) => AnimatedContainer(
         duration: Duration(milliseconds: 3),
         padding: EdgeInsets.only(top: yearViewState.budgetColPadding),
@@ -203,7 +172,7 @@ class YearViewAppBar extends StatelessWidget with PreferredSizeWidget {
 
   _toggleChart(context) {
     {
-      var yearViewState = Provider.of<YearViewState>(context, listen: false);
+      var yearViewState = Provider.of<YearViewProvider>(context, listen: false);
       var height = yearViewState.height;
       var newHeight = height == MediaQuery.of(context).size.height * .5
           ? MediaQuery.of(context).size.height * .7

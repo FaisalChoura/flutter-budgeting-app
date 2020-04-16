@@ -1,4 +1,4 @@
-import 'package:budget_app/services/models.dart';
+import 'package:budget_app/models/models.dart';
 import 'package:flutter/material.dart';
 
 class MonthCard extends StatelessWidget {
