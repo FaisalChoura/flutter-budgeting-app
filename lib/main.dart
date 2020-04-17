@@ -1,3 +1,4 @@
+import 'package:budget_app/providers/selected_year_provider.dart';
 import 'package:budget_app/routes.dart';
 import 'package:budget_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,9 @@ class MyApp extends StatelessWidget {
       providers: [
         StreamProvider<FirebaseUser>.value(
           value: AuthService().user,
+        ),
+        ChangeNotifierProvider<SelectedYear>(
+          create: (_) => new SelectedYear(),
         ),
       ],
       child: MaterialApp(

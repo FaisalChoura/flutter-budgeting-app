@@ -1,5 +1,5 @@
-import 'package:budget_app/providers/year_view_provider.dart';
-import 'package:budget_app/services/helpers.dart';
+import 'package:budget_app/providers/selected_year_provider.dart';
+import 'package:budget_app/providers/providers.dart';
 import 'package:budget_app/models/models.dart';
 import 'package:budget_app/services/db.dart';
 import 'package:budget_app/widgets/month_card.dart';
@@ -11,25 +11,26 @@ import 'package:provider/provider.dart';
 class YearViewScreen extends StatelessWidget {
   final TransactionsService transactionsService = TransactionsService();
 
-  final String year = '2019';
-
   @override
   Widget build(BuildContext context) {
+    int year = Provider.of<SelectedYear>(context).year;
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     return StreamBuilder(
-      stream: transactionsService.streamTransactionPerYear(user, 2020),
+      stream: transactionsService.streamTransactionPerYear(user, year),
       builder: (context, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
           return Center(
             child: Text('Loading'),
           );
         }
-        List<Month> months = buildMonthsList(snap.data);
+        // TODO is this the right place for the restructuring
+        SpendingYear spendingYear =
+            new SpendingYear(year: year, transactions: snap.data);
         return ChangeNotifierProvider<YearViewProvider>(
           create: (_) => YearViewProvider(),
           child: Consumer<YearViewProvider>(
             builder: (context, yearViewState, child) => Scaffold(
-              appBar: YearViewAppBar(year: year),
+              appBar: YearViewAppBar(year: year.toString()),
               body: Stack(
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
@@ -46,7 +47,9 @@ class YearViewScreen extends StatelessWidget {
                           end: Alignment.topCenter,
                         ),
                       ),
-                      child: AnimatedTotalSpendings()),
+                      child: AnimatedTotalSpendings(
+                        totalSpending: spendingYear.totalSpending,
+                      )),
                   AnimatedContainer(
                     duration: Duration(milliseconds: 350),
                     curve: Curves.fastOutSlowIn,
@@ -70,11 +73,11 @@ class YearViewScreen extends StatelessWidget {
                       ),
                       child: ListView.builder(
                         padding: EdgeInsets.all(16),
-                        itemCount: months.length,
+                        itemCount: spendingYear.months.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: EdgeInsets.only(bottom: 4),
-                            child: MonthCard(month: months[index]),
+                            child: MonthCard(month: spendingYear.months[index]),
                           );
                         },
                       ),
@@ -93,7 +96,8 @@ class YearViewScreen extends StatelessWidget {
 }
 
 class AnimatedTotalSpendings extends StatelessWidget {
-  const AnimatedTotalSpendings({Key key}) : super(key: key);
+  final double totalSpending;
+  AnimatedTotalSpendings({@required this.totalSpending});
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +122,7 @@ class AnimatedTotalSpendings extends StatelessWidget {
                 ],
               ),
               child: Text(
-                '15,200',
+                totalSpending.toStringAsFixed(2),
               ),
             ),
             Text(
