@@ -1,3 +1,4 @@
+import 'package:budget_app/screens/month.dart';
 import 'package:budget_app/screens/profile.dart';
 import 'package:budget_app/screens/screens.dart';
 import 'package:budget_app/widgets/bottom_nav.dart';
@@ -12,7 +13,22 @@ class LayoutScreen extends StatefulWidget {
 
 class _LayoutScreenState extends State<LayoutScreen> {
   int _currentIndex = 0;
-  List<Widget> _pages = [YearViewScreen(), ProfileScreen()];
+  List<Widget> _pages = [
+    Navigator(
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          WidgetBuilder builder;
+          switch (settings.name) {
+            case '/':
+              builder = (BuildContext _) => YearViewScreen();
+              break;
+            default:
+              throw Exception('Invalid route: ${settings.name}');
+          }
+          return MaterialPageRoute(builder: builder, settings: settings);
+        }),
+    ProfileScreen()
+  ];
 
   Stack _buildStackedPages() {
     List<Widget> children = [];

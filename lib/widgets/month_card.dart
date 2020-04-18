@@ -1,4 +1,5 @@
 import 'package:budget_app/models/models.dart';
+import 'package:budget_app/screens/month.dart';
 import 'package:flutter/material.dart';
 
 class MonthCard extends StatelessWidget {
@@ -30,7 +31,15 @@ class MonthCard extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => MonthScreen(
+                  month: this.month,
+                ),
+              ),
+            );
+          },
           borderRadius: BorderRadius.circular(20),
           child: Padding(
             padding: EdgeInsets.only(
