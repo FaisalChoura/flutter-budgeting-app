@@ -14,19 +14,17 @@ class LayoutScreen extends StatefulWidget {
 class _LayoutScreenState extends State<LayoutScreen> {
   int _currentIndex = 0;
   List<Widget> _pages = [
-    Navigator(
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          WidgetBuilder builder;
-          switch (settings.name) {
-            case '/':
-              builder = (BuildContext _) => YearViewScreen();
-              break;
-            default:
-              throw Exception('Invalid route: ${settings.name}');
-          }
-          return MaterialPageRoute(builder: builder, settings: settings);
-        }),
+    Navigator(onGenerateRoute: (RouteSettings settings) {
+      WidgetBuilder builder;
+      switch (settings.name) {
+        case '/':
+          builder = (BuildContext _) => YearViewScreen();
+          break;
+        default:
+          throw Exception('Invalid route: ${settings.name}');
+      }
+      return MaterialPageRoute(builder: builder, settings: settings);
+    }),
     ProfileScreen()
   ];
 
