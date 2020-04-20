@@ -2,10 +2,10 @@ import 'package:budget_app/models/models.dart';
 
 class Month {
   String name;
-  double amount;
+  double amount = 0;
   List<BTransaction> transactions = [];
 
-  Month({this.name, this.amount});
+  Month({this.name});
 
   void addTransaction(BTransaction transaction) {
     this.amount = this.amount + transaction.amount;

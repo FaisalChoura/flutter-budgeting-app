@@ -19,8 +19,8 @@ class SpendingYear {
       var monthNumber = transaction.date.toDate().month;
       if (monthsMap[monthNumber] == null) {
         String monthName = monthsOfTheYear[monthNumber - 1];
-        monthsMap[monthNumber] =
-            new Month(amount: transaction.amount, name: monthName);
+        monthsMap[monthNumber] = new Month(name: monthName);
+        monthsMap[monthNumber].addTransaction(transaction);
       } else {
         monthsMap[monthNumber].addTransaction(transaction);
       }
