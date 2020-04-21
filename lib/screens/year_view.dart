@@ -107,6 +107,7 @@ class AnimatedTotalSpendings extends StatelessWidget {
         padding: EdgeInsets.only(top: yearViewState.budgetColPadding),
         child: Column(
           children: <Widget>[
+            // TODO this is similar in month can we extract?
             AnimatedDefaultTextStyle(
               duration: Duration(milliseconds: 250),
               style: TextStyle(
