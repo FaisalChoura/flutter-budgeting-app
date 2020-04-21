@@ -81,8 +81,27 @@ class MonthScreen extends StatelessWidget {
                 );
               },
               itemBuilder: (context, BTransaction transaction) => ListTile(
-                title: Text(transaction.name),
-                subtitle: Text(transaction.amount.toString()),
+                leading: Icon(
+                  Icons.image,
+                  size: 24,
+                ),
+                subtitle: Text(transaction.category),
+                title: Text(
+                  transaction.name,
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                trailing: Wrap(
+                  spacing: 8,
+                  children: <Widget>[
+                    Text(
+                      '£ ' + transaction.amount.toString(),
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Icon(Icons.more_vert),
+                  ],
+                ),
               ),
               order: GroupedListOrder.ASC,
             ),
