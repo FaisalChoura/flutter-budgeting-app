@@ -48,7 +48,7 @@ class YearViewScreen extends StatelessWidget {
                         ),
                       ),
                       child: AnimatedTotalSpendings(
-                        totalSpending: spendingYear.totalSpending,
+                        year: spendingYear,
                       )),
                   AnimatedContainer(
                     duration: Duration(milliseconds: 350),
@@ -96,8 +96,8 @@ class YearViewScreen extends StatelessWidget {
 }
 
 class AnimatedTotalSpendings extends StatelessWidget {
-  final double totalSpending;
-  AnimatedTotalSpendings({@required this.totalSpending});
+  SpendingYear year;
+  AnimatedTotalSpendings({@required this.year});
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +123,7 @@ class AnimatedTotalSpendings extends StatelessWidget {
                 ],
               ),
               child: Text(
-                totalSpending.toStringAsFixed(2),
+                year.totalSpending.toStringAsFixed(2),
               ),
             ),
             Text(
@@ -132,7 +132,10 @@ class AnimatedTotalSpendings extends StatelessWidget {
             ),
             AnimatedOpacity(
               duration: Duration(milliseconds: 350),
-              child: YearChart(),
+              child: SizedBox(
+                  height: 200,
+                  width: 400,
+                  child: YearChart(spendingYear: year)),
               opacity: yearViewState.visible ? 1.0 : 0,
             )
           ],
