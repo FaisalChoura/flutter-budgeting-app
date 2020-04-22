@@ -44,24 +44,60 @@ class MonthScreen extends StatelessWidget {
               ],
             ),
             child: Align(
-              alignment: new Alignment(0.0, 0.3),
-              child: AnimatedDefaultTextStyle(
-                duration: Duration(milliseconds: 250),
-                style: TextStyle(
-                  fontSize: 48,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                      color: Color.fromARGB(60, 0, 0, 0),
-                      offset: Offset(0, 3),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                child: Text(
-                  month.amount.toStringAsFixed(2),
-                ),
+              alignment: new Alignment(0.0, 0.4),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                direction: Axis.vertical,
+                children: <Widget>[
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 6),
+                        child: Text(
+                          '£ ',
+                          style: TextStyle(fontSize: 32, color: Colors.white),
+                        ),
+                      ),
+                      AnimatedDefaultTextStyle(
+                        duration: Duration(milliseconds: 250),
+                        style: TextStyle(
+                          fontSize: 48,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              color: Color.fromARGB(60, 0, 0, 0),
+                              offset: Offset(0, 3),
+                              blurRadius: 6,
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          month.amount.toStringAsFixed(2),
+                        ),
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(50),
+                          onTap: () {
+                            print('hello');
+                          },
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 48,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Text(
+                    'Total Spending',
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  )
+                ],
               ),
             ),
           ),
