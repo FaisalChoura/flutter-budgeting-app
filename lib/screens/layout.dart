@@ -1,7 +1,7 @@
 import 'package:budget_app/screens/month.dart';
 import 'package:budget_app/screens/profile.dart';
 import 'package:budget_app/screens/screens.dart';
-import 'package:budget_app/widgets/bottom_nav.dart';
+import 'package:budget_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class LayoutScreen extends StatefulWidget {
