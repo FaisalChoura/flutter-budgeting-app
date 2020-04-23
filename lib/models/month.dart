@@ -7,6 +7,7 @@ class Month {
   List<BTransaction> transactions = [];
 
   Month({this.name}) {
+    // TODO check if we can make this cleaner
     number = _nameToNumber(name);
   }
 

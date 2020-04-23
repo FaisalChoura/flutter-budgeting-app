@@ -17,9 +17,9 @@ class YearChart extends StatelessWidget {
     int year = Provider.of<SelectedYear>(context).year;
     List<charts.Series<Month, DateTime>> series = [
       charts.Series(
-        id: "Subscribers",
+        id: "yearlyTransactions",
         data: data,
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.white,
         domainFn: (Month month, _) => DateTime.utc(year, month.number),
         measureFn: (Month month, _) => month.amount,
       )
@@ -29,7 +29,34 @@ class YearChart extends StatelessWidget {
       height: 400,
       padding: EdgeInsets.all(16),
       child: SizedBox(
-        child: charts.TimeSeriesChart(series, animate: true),
+        child: charts.TimeSeriesChart(
+          series,
+          animate: true,
+          domainAxis: new charts.DateTimeAxisSpec(
+            tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+              month: charts.TimeFormatterSpec(
+                  format: 'MMM', transitionFormat: 'MMM'),
+            ),
+            renderSpec: new charts.SmallTickRendererSpec(
+              labelStyle: new charts.TextStyleSpec(
+                  fontSize: 18, // size in Pts.
+                  color: charts.MaterialPalette.white),
+              axisLineStyle: charts.LineStyleSpec(
+                color: charts.MaterialPalette.white,
+              ),
+            ),
+          ),
+          primaryMeasureAxis: new charts.NumericAxisSpec(
+              renderSpec: new charts.NoneRenderSpec()
+              //   new charts.GridlineRendererSpec(
+              //   labelStyle: new charts.TextStyleSpec(
+              //       fontSize: 14, // size in Pts.
+              //       color: charts.MaterialPalette.white),
+              //   lineStyle:
+              //       new charts.LineStyleSpec(color: charts.MaterialPalette.white),
+              // ),
+              ),
+        ),
       ),
     );
   }
