@@ -1,4 +1,5 @@
 import 'package:budget_app/models/models.dart';
+import 'package:budget_app/services/db.dart';
 import 'package:budget_app/services/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -33,28 +34,9 @@ class MonthScreen extends StatelessWidget {
                   ),
                 );
               },
-              itemBuilder: (context, BTransaction transaction) => ListTile(
-                leading: Icon(
-                  Icons.image,
-                  size: 24,
-                ),
-                subtitle: Text(transaction.category),
-                title: Text(
-                  transaction.name,
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                trailing: Wrap(
-                  spacing: 8,
-                  children: <Widget>[
-                    Text(
-                      '£ ' + transaction.amount.toString(),
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Icon(Icons.more_vert),
-                  ],
-                ),
+              itemBuilder: (context, BTransaction transaction) =>
+                  TransactionTile(
+                transaction: transaction,
               ),
               order: GroupedListOrder.ASC,
             ),
@@ -79,6 +61,56 @@ class MonthScreen extends StatelessWidget {
       suffix = <String>['st', 'nd', 'rd'][digit - 1];
     }
     return '$weekDayName $day$suffix';
+  }
+}
+
+enum Settings { delete }
+
+class TransactionTile extends StatelessWidget {
+  final TransactionsService transactionsService = TransactionsService();
+
+  final BTransaction transaction;
+  TransactionTile({
+    @required this.transaction,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+        Icons.image,
+        size: 24,
+      ),
+      subtitle: Text(transaction.category),
+      title: Text(
+        transaction.name,
+        style: TextStyle(
+          fontSize: 16,
+        ),
+      ),
+      trailing: Wrap(
+        spacing: 8,
+        children: <Widget>[
+          Text(
+            '£ ' + transaction.amount.toString(),
+            style: TextStyle(fontSize: 16),
+          ),
+          PopupMenuButton<Settings>(
+            child: Icon(Icons.more_vert),
+            onSelected: (Settings selected) {
+              transactionsService.deleteTransaction(transaction.id);
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<Settings>>[
+              const PopupMenuItem(
+                value: Settings.delete,
+                child: Text("Delete"),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
 

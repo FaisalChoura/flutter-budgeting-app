@@ -21,7 +21,12 @@ class TransactionsService {
         .where('date', isLessThan: new DateTime.utc(year + 1))
         .snapshots();
     return stream.map((list) => list.documents
-        .map((doc) => Global.models[BTransaction](doc.data) as BTransaction)
+        .map((doc) => Global.models[BTransaction](doc.documentID, doc.data)
+            as BTransaction)
         .toList());
+  }
+
+  Future deleteTransaction(String id) {
+    return ref.document(id).delete();
   }
 }
