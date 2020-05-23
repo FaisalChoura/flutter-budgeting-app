@@ -12,21 +12,48 @@ class TransactionsService {
   TransactionsService() {
     ref = _db.collection(path);
   }
-
+  // TODO is this the right way to handle the data.
   Stream<List<BTransaction>> streamTransactionPerYear(
       FirebaseUser user, int year) {
-    var stream = ref
-        .where('uid', isEqualTo: user.uid)
-        .where('date', isGreaterThan: new DateTime.utc(year - 1))
-        .where('date', isLessThan: new DateTime.utc(year + 1))
-        .snapshots();
-    return stream.map((list) => list.documents
-        .map((doc) => Global.models[BTransaction](doc.documentID, doc.data)
-            as BTransaction)
-        .toList());
+    if (user != null) {
+      var stream = ref
+          .where('uid', isEqualTo: user.uid)
+          .where('date', isGreaterThan: new DateTime.utc(year - 1))
+          .where('date', isLessThan: new DateTime.utc(year + 1))
+          .snapshots();
+      return stream.map((list) => list.documents
+          .map((doc) => Global.models[BTransaction](doc.documentID, doc.data)
+              as BTransaction)
+          .toList());
+    }
+  }
+
+  Stream<List<BTransaction>> streamTransactionsPerMonth(
+      FirebaseUser user, int year, int month) {
+    if (user != null) {
+      var stream = ref
+          .where('uid', isEqualTo: user.uid)
+          .where('date', isGreaterThan: new DateTime.utc(year, month, 0))
+          .where('date', isLessThan: new DateTime.utc(year, month + 1, 0))
+          .snapshots();
+      return stream.map((list) => list.documents
+          .map((doc) => Global.models[BTransaction](doc.documentID, doc.data)
+              as BTransaction)
+          .toList());
+    }
   }
 
   Future deleteTransaction(String id) {
     return ref.document(id).delete();
+  }
+
+  Future addTransaction(FirebaseUser user) {
+    return ref.add({
+      "name": "McDonalds",
+      "uid": user.uid,
+      "category": "Shopping",
+      "amount": 15.1,
+      "date": Timestamp.now()
+    });
   }
 }

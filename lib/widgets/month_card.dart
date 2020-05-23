@@ -1,6 +1,7 @@
 import 'package:budget_app/models/models.dart';
 import 'package:budget_app/screens/month.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MonthCard extends StatelessWidget {
   Month month;
@@ -35,7 +36,7 @@ class MonthCard extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => MonthScreen(
-                  month: this.month,
+                  monthName: this.month.name,
                 ),
               ),
             );

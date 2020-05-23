@@ -1,6 +1,4 @@
-import 'package:budget_app/providers/selected_year_provider.dart';
 import 'package:budget_app/providers/providers.dart';
-import 'package:budget_app/models/models.dart';
 import 'package:budget_app/services/db.dart';
 import 'package:budget_app/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,24 +10,23 @@ class YearViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int year = Provider.of<SelectedYear>(context).year;
+    SpendingYear spendingYear = Provider.of<SpendingYear>(context);
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     return StreamBuilder(
-      stream: transactionsService.streamTransactionPerYear(user, year),
+      stream:
+          transactionsService.streamTransactionPerYear(user, spendingYear.year),
       builder: (context, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
           return Center(
             child: Text('Loading'),
           );
         }
-        // TODO is this the right place for the restructuring
-        SpendingYear spendingYear =
-            new SpendingYear(year: year, transactions: snap.data);
+        spendingYear.buildMonthsList(snap.data);
         return ChangeNotifierProvider<YearViewProvider>(
           create: (_) => YearViewProvider(),
           child: Consumer<YearViewProvider>(
             builder: (context, yearViewState, child) => Scaffold(
-              appBar: YearViewAppBar(year: year.toString()),
+              appBar: YearViewAppBar(year: spendingYear.year.toString()),
               body: Stack(
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
@@ -76,7 +73,9 @@ class YearViewScreen extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: EdgeInsets.only(bottom: 4),
-                            child: MonthCard(month: spendingYear.months[index]),
+                            child: MonthCard(
+                              month: spendingYear.months[index],
+                            ),
                           );
                         },
                       ),

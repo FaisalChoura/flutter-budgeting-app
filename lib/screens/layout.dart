@@ -1,8 +1,11 @@
 import 'package:budget_app/screens/month.dart';
 import 'package:budget_app/screens/profile.dart';
 import 'package:budget_app/screens/screens.dart';
+import 'package:budget_app/services/db.dart';
 import 'package:budget_app/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LayoutScreen extends StatefulWidget {
   LayoutScreen({Key key}) : super(key: key);
@@ -12,6 +15,7 @@ class LayoutScreen extends StatefulWidget {
 }
 
 class _LayoutScreenState extends State<LayoutScreen> {
+  final TransactionsService transactionsService = TransactionsService();
   int _currentIndex = 0;
   List<Widget> _pages = [
     Navigator(onGenerateRoute: (RouteSettings settings) {
@@ -61,7 +65,10 @@ class _LayoutScreenState extends State<LayoutScreen> {
             size: 32.0,
           ),
         ),
-        onPressed: () async {},
+        onPressed: () => {
+          transactionsService
+              .addTransaction(Provider.of<FirebaseUser>(context, listen: false))
+        },
       ),
       bottomNavigationBar: BottomNav(
         color: Color.fromARGB(255, 82, 89, 102),

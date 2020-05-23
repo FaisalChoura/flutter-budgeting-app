@@ -14,7 +14,7 @@ class YearChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = spendingYear.months;
 
-    int year = Provider.of<SelectedYear>(context).year;
+    int year = Provider.of<SpendingYear>(context).year;
     List<charts.Series<Month, DateTime>> series = [
       charts.Series(
         id: "yearlyTransactions",

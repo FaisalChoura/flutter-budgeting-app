@@ -1,19 +1,23 @@
 import 'package:budget_app/models/models.dart';
+import 'package:budget_app/services/constants.dart';
 import 'package:budget_app/services/helpers.dart';
+import 'package:flutter/foundation.dart';
 
-class SpendingYear {
-  int year;
+class SpendingYear extends ChangeNotifier {
+  int _year = DateTime.now().year;
   List<Month> months;
   double totalSpending = 0;
 
-  SpendingYear({this.year, List<BTransaction> transactions}) {
-    months = _buildMonthsList(transactions);
-    months.forEach((month) {
-      totalSpending = totalSpending + month.amount;
-    });
+  SpendingYear();
+
+  int get year => _year;
+  set year(int year) {
+    this._year = year;
+    notifyListeners();
   }
 
-  List<Month> _buildMonthsList(List<BTransaction> transactions) {
+  void buildMonthsList(List<BTransaction> transactions) {
+    this.totalSpending = 0;
     Map<int, Month> monthsMap = {};
     transactions.forEach((transaction) {
       var monthNumber = transaction.date.toDate().month;
@@ -25,6 +29,9 @@ class SpendingYear {
         monthsMap[monthNumber].addTransaction(transaction);
       }
     });
-    return monthsMap.values.toList();
+    this.months = monthsMap.values.toList();
+    this.months.forEach((month) {
+      totalSpending = totalSpending + month.amount;
+    });
   }
 }

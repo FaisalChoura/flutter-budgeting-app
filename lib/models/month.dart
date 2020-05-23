@@ -11,6 +11,12 @@ class Month {
     number = _nameToNumber(name);
   }
 
+  void addTransactions(List<BTransaction> transactions) {
+    transactions.forEach((element) {
+      addTransaction(element);
+    });
+  }
+
   void addTransaction(BTransaction transaction) {
     this.amount = this.amount + transaction.amount;
     this.transactions.add(transaction);

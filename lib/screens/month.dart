@@ -1,51 +1,77 @@
 import 'package:budget_app/models/models.dart';
+import 'package:budget_app/providers/providers.dart';
+import 'package:budget_app/services/constants.dart';
 import 'package:budget_app/services/db.dart';
 import 'package:budget_app/services/helpers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:provider/provider.dart';
 
 class MonthScreen extends StatelessWidget {
-  final Month month;
-  const MonthScreen({Key key, this.month}) : super(key: key);
+  final String monthName;
+  final TransactionsService transactionsService = TransactionsService();
 
+  MonthScreen({Key key, this.monthName}) : super(key: key);
+  // TODO fix grouping by
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(month.name),
-      ),
-      body: Column(
-        children: <Widget>[
-          MonthHeader(month: month),
-          Expanded(
-            child: GroupedListView(
-              padding: EdgeInsets.all(0),
-              elements: month.transactions,
-              groupBy: (BTransaction transaction) => transaction.date.toDate(),
-              groupSeparatorBuilder: (DateTime date) {
-                return Padding(
-                  // TODO Theme
-                  padding: EdgeInsets.only(left: 16),
-                  child: Text(
-                    _userFriendlyDate(date),
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                );
-              },
-              itemBuilder: (context, BTransaction transaction) =>
-                  TransactionTile(
-                transaction: transaction,
-              ),
-              order: GroupedListOrder.ASC,
+    var user = Provider.of<FirebaseUser>(context);
+    var year = Provider.of<SpendingYear>(context).year;
+    return StreamBuilder(
+        stream: transactionsService.streamTransactionsPerMonth(
+            user, year, monthNameToNumber(monthName)),
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: Text('Loading'),
+            );
+          }
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              title: Text(monthName),
             ),
-          )
-        ],
-      ),
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-    );
+            body: Column(
+              children: <Widget>[
+                MonthHeader(month: generateMonth(snap.data)),
+                Expanded(
+                  child: GroupedListView(
+                    padding: EdgeInsets.all(0),
+                    elements: snap.data,
+                    groupBy: (BTransaction transaction) =>
+                        transaction.date.toDate(),
+                    groupSeparatorBuilder: (DateTime date) {
+                      return Padding(
+                        // TODO Theme
+                        padding: EdgeInsets.only(left: 16),
+                        child: Text(
+                          _userFriendlyDate(date),
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    },
+                    itemBuilder: (context, BTransaction transaction) =>
+                        TransactionTile(
+                      transaction: transaction,
+                    ),
+                    order: GroupedListOrder.ASC,
+                  ),
+                )
+              ],
+            ),
+            extendBodyBehindAppBar: true,
+            extendBody: true,
+          );
+        });
+  }
+
+  Month generateMonth(List<BTransaction> transactions) {
+    var month = new Month(name: this.monthName);
+    month.addTransactions(transactions);
+    return month;
   }
 
   String _userFriendlyDate(DateTime date) {
