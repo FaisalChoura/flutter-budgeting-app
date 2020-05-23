@@ -40,14 +40,15 @@ class MonthScreen extends StatelessWidget {
                   child: GroupedListView(
                     padding: EdgeInsets.all(0),
                     elements: snap.data,
-                    groupBy: (BTransaction transaction) =>
-                        transaction.date.toDate(),
-                    groupSeparatorBuilder: (DateTime date) {
+                    groupBy: (BTransaction transaction) {
+                      return _userFriendlyDate(transaction);
+                    },
+                    groupSeparatorBuilder: (String date) {
                       return Padding(
                         // TODO Theme
                         padding: EdgeInsets.only(left: 16),
                         child: Text(
-                          _userFriendlyDate(date),
+                          date,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
@@ -74,7 +75,8 @@ class MonthScreen extends StatelessWidget {
     return month;
   }
 
-  String _userFriendlyDate(DateTime date) {
+  String _userFriendlyDate(BTransaction transaction) {
+    var date = transaction.date.toDate();
     if (date.toUtc() == DateTime.now().toUtc()) {
       return 'Today';
     }
