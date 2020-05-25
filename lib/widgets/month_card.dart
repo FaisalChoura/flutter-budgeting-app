@@ -1,10 +1,9 @@
 import 'package:budget_app/models/models.dart';
-import 'package:budget_app/screens/month.dart';
+import 'package:budget_app/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MonthCard extends StatelessWidget {
-  Month month;
+  final Month month;
 
   // TODO Need to add key here
   MonthCard({
@@ -35,7 +34,7 @@ class MonthCard extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => MonthScreen(
+                builder: (_) => MonthTransactionsScreen(
                   monthName: this.month.name,
                 ),
               ),

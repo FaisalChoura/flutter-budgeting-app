@@ -1,2 +1,2 @@
-export './b_transaction.dart';
+export './transaction_rec.dart';
 export './month.dart';

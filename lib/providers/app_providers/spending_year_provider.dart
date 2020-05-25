@@ -16,7 +16,7 @@ class SpendingYear extends ChangeNotifier {
     notifyListeners();
   }
 
-  void buildMonthsList(List<BTransaction> transactions) {
+  void buildMonthsList(List<TransactionRec> transactions) {
     this.totalSpending = 0;
     Map<int, Month> monthsMap = {};
     transactions.forEach((transaction) {

@@ -4,20 +4,20 @@ class Month {
   String name;
   double amount = 0;
   int number;
-  List<BTransaction> transactions = [];
+  List<TransactionRec> transactions = [];
 
   Month({this.name}) {
     // TODO check if we can make this cleaner
     number = _nameToNumber(name);
   }
 
-  void addTransactions(List<BTransaction> transactions) {
+  void addTransactions(List<TransactionRec> transactions) {
     transactions.forEach((element) {
       addTransaction(element);
     });
   }
 
-  void addTransaction(BTransaction transaction) {
+  void addTransaction(TransactionRec transaction) {
     this.amount = this.amount + transaction.amount;
     this.transactions.add(transaction);
   }

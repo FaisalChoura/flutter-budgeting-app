@@ -13,7 +13,7 @@ class TransactionsService {
     ref = _db.collection(path);
   }
   // TODO is this the right way to handle the data.
-  Stream<List<BTransaction>> streamTransactionPerYear(
+  Stream<List<TransactionRec>> streamTransactionPerYear(
       FirebaseUser user, int year) {
     if (user != null) {
       var stream = ref
@@ -21,14 +21,17 @@ class TransactionsService {
           .where('date', isGreaterThan: new DateTime.utc(year - 1))
           .where('date', isLessThan: new DateTime.utc(year + 1))
           .snapshots();
-      return stream.map((list) => list.documents
-          .map((doc) => Global.models[BTransaction](doc.documentID, doc.data)
-              as BTransaction)
-          .toList());
+      return stream.map((list) {
+        return list.documents
+            .map((doc) =>
+                Global.models[TransactionRec](doc.documentID, doc.data)
+                    as TransactionRec)
+            .toList();
+      });
     }
   }
 
-  Stream<List<BTransaction>> streamTransactionsPerMonth(
+  Stream<List<TransactionRec>> streamTransactionsPerMonth(
       FirebaseUser user, int year, int month) {
     if (user != null) {
       var stream = ref
@@ -37,8 +40,8 @@ class TransactionsService {
           .where('date', isLessThan: new DateTime.utc(year, month + 1, 0))
           .snapshots();
       return stream.map((list) => list.documents
-          .map((doc) => Global.models[BTransaction](doc.documentID, doc.data)
-              as BTransaction)
+          .map((doc) => Global.models[TransactionRec](doc.documentID, doc.data)
+              as TransactionRec)
           .toList());
     }
   }

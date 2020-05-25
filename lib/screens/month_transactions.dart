@@ -1,18 +1,19 @@
-import 'package:budget_app/models/models.dart';
 import 'package:budget_app/providers/providers.dart';
-import 'package:budget_app/services/constants.dart';
-import 'package:budget_app/services/db.dart';
-import 'package:budget_app/services/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 
-class MonthScreen extends StatelessWidget {
+import 'package:budget_app/services/constants.dart';
+import 'package:budget_app/services/db.dart';
+import 'package:budget_app/models/models.dart';
+import 'package:budget_app/services/helpers.dart';
+
+class MonthTransactionsScreen extends StatelessWidget {
   final String monthName;
   final TransactionsService transactionsService = TransactionsService();
 
-  MonthScreen({Key key, this.monthName}) : super(key: key);
+  MonthTransactionsScreen({Key key, this.monthName}) : super(key: key);
   // TODO fix grouping by
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class MonthScreen extends StatelessWidget {
                   child: GroupedListView(
                     padding: EdgeInsets.all(0),
                     elements: snap.data,
-                    groupBy: (BTransaction transaction) {
+                    groupBy: (TransactionRec transaction) {
                       return _userFriendlyDate(transaction);
                     },
                     groupSeparatorBuilder: (String date) {
@@ -54,7 +55,7 @@ class MonthScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    itemBuilder: (context, BTransaction transaction) =>
+                    itemBuilder: (context, TransactionRec transaction) =>
                         TransactionTile(
                       transaction: transaction,
                     ),
@@ -69,13 +70,13 @@ class MonthScreen extends StatelessWidget {
         });
   }
 
-  Month generateMonth(List<BTransaction> transactions) {
+  Month generateMonth(List<TransactionRec> transactions) {
     var month = new Month(name: this.monthName);
     month.addTransactions(transactions);
     return month;
   }
 
-  String _userFriendlyDate(BTransaction transaction) {
+  String _userFriendlyDate(TransactionRec transaction) {
     var date = transaction.date.toDate();
     if (date.toUtc() == DateTime.now().toUtc()) {
       return 'Today';
@@ -97,7 +98,7 @@ enum Settings { delete }
 class TransactionTile extends StatelessWidget {
   final TransactionsService transactionsService = TransactionsService();
 
-  final BTransaction transaction;
+  final TransactionRec transaction;
   TransactionTile({
     @required this.transaction,
     Key key,

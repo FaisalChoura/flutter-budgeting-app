@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class YearViewScreen extends StatelessWidget {
+class YearTransactionsScreen extends StatelessWidget {
   final TransactionsService transactionsService = TransactionsService();
 
   @override
@@ -21,11 +21,12 @@ class YearViewScreen extends StatelessWidget {
             child: Text('Loading'),
           );
         }
+        // TODO fix dynamic data here.
         spendingYear.buildMonthsList(snap.data);
-        return ChangeNotifierProvider<YearViewProvider>(
-          create: (_) => YearViewProvider(),
-          child: Consumer<YearViewProvider>(
-            builder: (context, yearViewState, child) => Scaffold(
+        return ChangeNotifierProvider<YearScreenProvider>(
+          create: (_) => YearScreenProvider(),
+          child: Consumer<YearScreenProvider>(
+            builder: (context, viewProvider, child) => Scaffold(
               appBar: YearViewAppBar(year: spendingYear.year.toString()),
               body: Stack(
                 alignment: Alignment.bottomCenter,
@@ -49,9 +50,9 @@ class YearViewScreen extends StatelessWidget {
                   AnimatedContainer(
                     duration: Duration(milliseconds: 350),
                     curve: Curves.fastOutSlowIn,
-                    height: yearViewState.height == 0.0
+                    height: viewProvider.monthDataContainerheight == 0.0
                         ? MediaQuery.of(context).size.height * .7
-                        : yearViewState.height,
+                        : viewProvider.monthDataContainerheight,
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -94,22 +95,22 @@ class YearViewScreen extends StatelessWidget {
 }
 
 class AnimatedTotalSpendings extends StatelessWidget {
-  SpendingYear year;
+  final SpendingYear year;
   AnimatedTotalSpendings({@required this.year});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<YearViewProvider>(
-      builder: (context, yearViewState, child) => AnimatedContainer(
+    return Consumer<YearScreenProvider>(
+      builder: (context, viewProvider, child) => AnimatedContainer(
         duration: Duration(milliseconds: 3),
-        padding: EdgeInsets.only(top: yearViewState.budgetColPadding),
+        padding: EdgeInsets.only(top: viewProvider.totalSpendingsPadding),
         child: Column(
           children: <Widget>[
             // TODO this is similar in month can we extract?
             AnimatedDefaultTextStyle(
               duration: Duration(milliseconds: 250),
               style: TextStyle(
-                fontSize: yearViewState.budgetFontSize,
+                fontSize: viewProvider.totalSpendingsFontSize,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 shadows: [
@@ -134,7 +135,7 @@ class AnimatedTotalSpendings extends StatelessWidget {
                   height: 200,
                   width: 400,
                   child: YearChart(spendingYear: year)),
-              opacity: yearViewState.visible ? 1.0 : 0,
+              opacity: viewProvider.yearChartVisible ? 1.0 : 0,
             )
           ],
         ),
@@ -165,7 +166,9 @@ class YearViewAppBar extends StatelessWidget with PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       actions: <Widget>[
         FlatButton(
-          onPressed: () => _toggleChart(context),
+          onPressed: () =>
+              Provider.of<YearScreenProvider>(context, listen: false)
+                  .toggleChart(MediaQuery.of(context).size.height),
           child: Icon(
             Icons.show_chart,
             color: Colors.white,
@@ -174,21 +177,5 @@ class YearViewAppBar extends StatelessWidget with PreferredSizeWidget {
         )
       ],
     );
-  }
-
-  _toggleChart(context) {
-    {
-      var yearViewState = Provider.of<YearViewProvider>(context, listen: false);
-      var height = yearViewState.height;
-      var newHeight = height == MediaQuery.of(context).size.height * .5
-          ? MediaQuery.of(context).size.height * .7
-          : MediaQuery.of(context).size.height * .5;
-      yearViewState.height = newHeight;
-      yearViewState.visible = !yearViewState.visible;
-      yearViewState.budgetFontSize =
-          yearViewState.budgetFontSize == 48 ? 32 : 48;
-      yearViewState.budgetColPadding =
-          yearViewState.budgetColPadding == 130 ? 110 : 130;
-    }
   }
 }

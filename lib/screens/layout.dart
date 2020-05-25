@@ -1,11 +1,11 @@
-import 'package:budget_app/screens/month.dart';
 import 'package:budget_app/screens/profile.dart';
-import 'package:budget_app/screens/screens.dart';
 import 'package:budget_app/services/db.dart';
 import 'package:budget_app/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'screens.dart';
 
 class LayoutScreen extends StatefulWidget {
   LayoutScreen({Key key}) : super(key: key);
@@ -22,7 +22,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
       WidgetBuilder builder;
       switch (settings.name) {
         case '/':
-          builder = (BuildContext _) => YearViewScreen();
+          builder = (BuildContext _) => YearTransactionsScreen();
           break;
         default:
           throw Exception('Invalid route: ${settings.name}');

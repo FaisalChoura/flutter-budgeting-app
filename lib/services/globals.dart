@@ -4,6 +4,6 @@ class Global {
   static final String title = 'Budget App';
 
   static final Map models = {
-    BTransaction: (id, data) => BTransaction.fromMap(id, data),
+    TransactionRec: (id, data) => TransactionRec.fromMap(id, data),
   };
 }

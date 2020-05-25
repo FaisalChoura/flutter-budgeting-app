@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class BTransaction {
+class TransactionRec {
   String id;
   String name;
   double amount;
   String category;
   Timestamp date;
 
-  BTransaction({this.id, this.name, this.amount, this.category, this.date});
+  TransactionRec({this.id, this.name, this.amount, this.category, this.date});
 
-  factory BTransaction.fromMap(String id, Map data) {
-    return BTransaction(
+  factory TransactionRec.fromMap(String id, Map data) {
+    return TransactionRec(
       id: id,
       name: data['name'] ?? '',
       amount: data['amount'] ?? 0,
