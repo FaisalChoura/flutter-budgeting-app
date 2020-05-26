@@ -8,7 +8,6 @@ class Month {
   List<TransactionRec> transactions = [];
 
   Month({this.name}) {
-    // TODO check if we can make this cleaner
     number = monthNameToNumber(name);
   }
 
@@ -21,5 +20,26 @@ class Month {
   void addTransaction(TransactionRec transaction) {
     this.amount = this.amount + transaction.amount;
     this.transactions.add(transaction);
+  }
+
+  List<Category> groupByCategory() {
+    Map<String, num> map = {};
+
+    this.transactions.forEach((transaction) {
+      if (map[transaction.category] != null) {
+        map[transaction.category] =
+            map[transaction.category] + transaction.amount;
+      } else {
+        map[transaction.category] = transaction.amount;
+      }
+    });
+
+    List<Category> categories = [];
+
+    map.forEach((key, value) {
+      categories.add(new Category(name: key, total: value));
+    });
+
+    return categories;
   }
 }
