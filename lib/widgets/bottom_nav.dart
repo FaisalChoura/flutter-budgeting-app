@@ -81,25 +81,6 @@ class _BottomNavState extends State<BottomNav> {
     );
   }
 
-  // Widget _buildMiddleTabItem() {
-  //   return Expanded(
-  //     child: SizedBox(
-  //       height: widget.height,
-  //       child: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: <Widget>[
-  //           SizedBox(height: widget.iconSize),
-  //           Text(
-  //             widget.centerItemText ?? '',
-  //             style: TextStyle(color: widget.color),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _buildTabItem({
     BottomNavItem item,
     int index,

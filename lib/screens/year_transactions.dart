@@ -28,61 +28,63 @@ class YearTransactionsScreen extends StatelessWidget {
           child: Consumer<YearScreenProvider>(
             builder: (context, viewProvider, child) => Scaffold(
               appBar: YearViewAppBar(year: spendingYear.year.toString()),
-              body: Stack(
-                alignment: Alignment.bottomCenter,
-                children: <Widget>[
-                  Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 31, 109, 255),
-                            Color.fromARGB(255, 31, 184, 255),
-                          ],
-                          begin: new Alignment(0.0, -0.5),
-                          end: Alignment.topCenter,
-                        ),
-                      ),
-                      child: AnimatedTotalSpendings(
-                        year: spendingYear,
-                      )),
-                  AnimatedContainer(
-                    duration: Duration(milliseconds: 350),
-                    curve: Curves.fastOutSlowIn,
-                    height: viewProvider.monthDataContainerheight == 0.0
-                        ? MediaQuery.of(context).size.height * .7
-                        : viewProvider.monthDataContainerheight,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromARGB(60, 0, 0, 0),
-                            offset: Offset(0, -3),
-                            blurRadius: 6.0,
+              body: SingleChildScrollView(
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: <Widget>[
+                    Container(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 31, 109, 255),
+                              Color.fromARGB(255, 31, 184, 255),
+                            ],
+                            begin: new Alignment(0.0, -0.5),
+                            end: Alignment.topCenter,
                           ),
-                        ],
-                      ),
-                      child: ListView.builder(
-                        padding: EdgeInsets.all(16),
-                        itemCount: spendingYear.months.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 4),
-                            child: MonthCard(
-                              month: spendingYear.months[index],
+                        ),
+                        child: AnimatedTotalSpendings(
+                          year: spendingYear,
+                        )),
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 350),
+                      curve: Curves.fastOutSlowIn,
+                      height: viewProvider.monthDataContainerheight == 0.0
+                          ? MediaQuery.of(context).size.height * .7
+                          : viewProvider.monthDataContainerheight,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(60, 0, 0, 0),
+                              offset: Offset(0, -3),
+                              blurRadius: 6.0,
                             ),
-                          );
-                        },
+                          ],
+                        ),
+                        child: ListView.builder(
+                          padding: EdgeInsets.all(16),
+                          itemCount: spendingYear.months.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 4),
+                              child: MonthCard(
+                                month: spendingYear.months[index],
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               extendBodyBehindAppBar: true,
               extendBody: true,

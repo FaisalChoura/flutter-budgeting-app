@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class TransactionRec {
   String id;
   String name;
-  double amount;
+  num amount;
   String category;
   Timestamp date;
 

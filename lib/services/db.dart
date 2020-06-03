@@ -50,13 +50,13 @@ class TransactionsService {
     return ref.document(id).delete();
   }
 
-  Future addTransaction(FirebaseUser user) {
+  Future addTransaction(FirebaseUser user, TransactionRec transaction) {
     return ref.add({
-      "name": "McDonalds",
+      "name": transaction.name,
       "uid": user.uid,
-      "category": "Shopping",
-      "amount": 15.1,
-      "date": Timestamp.now()
+      "category": transaction.category,
+      "amount": transaction.amount,
+      "date": transaction.date
     });
   }
 }
