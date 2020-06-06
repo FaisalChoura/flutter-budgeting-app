@@ -51,6 +51,7 @@ class _BottomNavState extends State<BottomNav> {
         item: widget.items[index],
         index: index,
         onPressed: _updateIndex,
+        key: Key("navItem$index"),
       );
     });
     // items.insert(items.length >> 1, _buildMiddleTabItem());
@@ -81,11 +82,8 @@ class _BottomNavState extends State<BottomNav> {
     );
   }
 
-  Widget _buildTabItem({
-    BottomNavItem item,
-    int index,
-    ValueChanged<int> onPressed,
-  }) {
+  Widget _buildTabItem(
+      {BottomNavItem item, int index, ValueChanged<int> onPressed, Key key}) {
     Color color = _selectedIndex == index ? widget.selectedColor : widget.color;
     return Expanded(
       child: SizedBox(
@@ -93,6 +91,7 @@ class _BottomNavState extends State<BottomNav> {
         child: Material(
           type: MaterialType.transparency,
           child: InkWell(
+            key: key,
             onTap: () => onPressed(index),
             child: Column(
               mainAxisSize: MainAxisSize.min,

@@ -4,9 +4,10 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class MonthChart extends StatelessWidget {
+  final Key key;
   final Month month;
 
-  MonthChart({@required this.month});
+  MonthChart({@required this.month, this.key});
 
   @override
   Widget build(BuildContext context) {

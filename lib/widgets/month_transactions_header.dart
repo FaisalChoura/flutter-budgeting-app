@@ -12,14 +12,17 @@ class MonthHeader extends StatefulWidget {
   final Month month;
 
   @override
-  _MonthHeaderState createState() => _MonthHeaderState();
+  MonthHeaderState createState() => MonthHeaderState();
 }
 
-class _MonthHeaderState extends State<MonthHeader>
+class MonthHeaderState extends State<MonthHeader>
     with TickerProviderStateMixin {
   bool _expanded = false;
   double _height;
   AnimationController turnController;
+
+  get expanded => _expanded;
+  get height => _height;
 
   initState() {
     turnController = AnimationController(
@@ -30,12 +33,19 @@ class _MonthHeaderState extends State<MonthHeader>
   }
 
   @override
+  void dispose() {
+    turnController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _height = _expanded
         ? MediaQuery.of(context).size.height * 0.48
         : MediaQuery.of(context).size.height * 0.25;
 
     return AnimatedContainer(
+      key: Key("animtedMonthHeaderContainer"),
       duration: Duration(milliseconds: 250),
       curve: Curves.easeInCubic,
       // TODO check fragmantation for entire app
@@ -110,6 +120,7 @@ class _MonthHeaderState extends State<MonthHeader>
                     Material(
                       color: Colors.transparent,
                       child: InkWell(
+                        key: Key("expansionToggle"),
                         borderRadius: BorderRadius.circular(50),
                         onTap: () {
                           _toggleExpansion();
@@ -132,6 +143,7 @@ class _MonthHeaderState extends State<MonthHeader>
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
                 AnimatedOpacity(
+                  key: Key("monthBreakdownChartOpacity"),
                   duration: Duration(milliseconds: 100),
                   child: SizedBox(
                     height: 210,
