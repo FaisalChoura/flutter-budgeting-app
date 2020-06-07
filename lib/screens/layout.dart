@@ -1,5 +1,4 @@
 import 'package:budget_app/screens/profile.dart';
-import 'package:budget_app/services/db.dart';
 import 'package:budget_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
