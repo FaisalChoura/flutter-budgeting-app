@@ -1,4 +1,5 @@
 import 'package:budget_app/services/auth.dart';
+import 'package:budget_app/services/db.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -12,6 +13,9 @@ List<SingleChildWidget> providers = [
 ];
 
 List<SingleChildWidget> independentServices = [
+  Provider(
+    create: (_) => TransactionsService(),
+  ),
   StreamProvider<FirebaseUser>.value(
     value: AuthService().user,
   ),

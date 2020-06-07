@@ -13,7 +13,6 @@ class LayoutScreen extends StatefulWidget {
 }
 
 class _LayoutScreenState extends State<LayoutScreen> {
-  final TransactionsService transactionsService = TransactionsService();
   int _currentIndex = 0;
   List<Widget> _pages = [
     Navigator(onGenerateRoute: (RouteSettings settings) {

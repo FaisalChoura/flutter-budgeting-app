@@ -208,8 +208,6 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
   TransactionRec transaction = new TransactionRec();
   DateTime selectedDate = DateTime.now();
 
-  final TransactionsService transactionsService = TransactionsService();
-
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -360,9 +358,9 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
 
   // Add loading in button when clicked
   _submitForm(BuildContext context) {
+    final transactionsService = Provider.of<TransactionsService>(context);
     if (_formKey.currentState.validate() && transaction.category != "") {
       _formKey.currentState.save();
-      print(transaction);
       transactionsService
           .addTransaction(
               Provider.of<FirebaseUser>(context, listen: false), transaction)

@@ -12,12 +12,12 @@ import 'package:budget_app/widgets/month_transactions_header.dart';
 
 class MonthTransactionsScreen extends StatelessWidget {
   final String monthName;
-  final TransactionsService transactionsService = TransactionsService();
 
   MonthTransactionsScreen({Key key, this.monthName}) : super(key: key);
   // TODO fix grouping by
   @override
   Widget build(BuildContext context) {
+    final transactionsService = Provider.of<TransactionsService>(context);
     var user = Provider.of<FirebaseUser>(context);
     var year = Provider.of<SpendingYear>(context).year;
     return StreamBuilder(
@@ -97,8 +97,6 @@ class MonthTransactionsScreen extends StatelessWidget {
 enum Settings { delete }
 
 class TransactionTile extends StatelessWidget {
-  final TransactionsService transactionsService = TransactionsService();
-
   final TransactionRec transaction;
   TransactionTile({
     @required this.transaction,
@@ -107,6 +105,7 @@ class TransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transactionsService = Provider.of<TransactionsService>(context);
     return ListTile(
       leading: Icon(
         Icons.image,

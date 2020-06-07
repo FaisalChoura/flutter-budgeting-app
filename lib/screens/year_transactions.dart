@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class YearTransactionsScreen extends StatelessWidget {
-  final TransactionsService transactionsService = TransactionsService();
-
   @override
   Widget build(BuildContext context) {
+    final transactionsService = Provider.of<TransactionsService>(context);
+
     SpendingYear spendingYear = Provider.of<SpendingYear>(context);
     FirebaseUser user = Provider.of<FirebaseUser>(context);
     return StreamBuilder(
