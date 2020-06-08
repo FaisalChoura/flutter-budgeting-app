@@ -6,36 +6,39 @@ import 'package:flutter_test/flutter_test.dart';
 import '../helpers/constants.dart';
 
 void main() {
-  testWidgets('Animation happens when toggle is clicked',
-      (WidgetTester tester) async {
-    final month = Month(name: "November");
+  group("Month Transaction Header Widget", () {
+    testWidgets('Animation happens when toggle is clicked',
+        (WidgetTester tester) async {
+      final month = Month(name: "November");
 
-    month.addTransactions([eatingOut1, eatingOut2]);
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: MonthHeader(
-            key: Key("monthHeader"),
-            month: month,
+      month.addTransactions([eatingOut1, eatingOut2]);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MonthHeader(
+              key: Key("monthHeader"),
+              month: month,
+            ),
           ),
         ),
-      ),
-    );
-    AnimatedOpacity monthChartInitOpacity =
-        tester.firstWidget(find.byKey(Key("monthBreakdownChartOpacity")));
+      );
+      AnimatedOpacity monthChartInitOpacity =
+          tester.firstWidget(find.byKey(Key("monthBreakdownChartOpacity")));
 
-    expect(monthChartInitOpacity.opacity, 0);
+      expect(monthChartInitOpacity.opacity, 0);
 
-    await tester.tap(find.byKey(Key("expansionToggle")));
+      await tester.tap(find.byKey(Key("expansionToggle")));
 
-    await tester.pumpAndSettle();
-    AnimatedOpacity monthChartAfterAnimationOpacity =
-        tester.firstWidget(find.byKey(Key("monthBreakdownChartOpacity")));
+      await tester.pumpAndSettle();
+      AnimatedOpacity monthChartAfterAnimationOpacity =
+          tester.firstWidget(find.byKey(Key("monthBreakdownChartOpacity")));
 
-    var state = tester.state<MonthHeaderState>(find.byKey(Key("monthHeader")));
-    expect(monthChartAfterAnimationOpacity.opacity, 1);
+      var state =
+          tester.state<MonthHeaderState>(find.byKey(Key("monthHeader")));
+      expect(monthChartAfterAnimationOpacity.opacity, 1);
 
-    expect(state.expanded, true);
-    expect(state.height, 288);
+      expect(state.expanded, true);
+      expect(state.height, 288);
+    });
   });
 }

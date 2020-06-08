@@ -133,11 +133,13 @@ class AnimatedTotalSpendings extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 14),
             ),
             AnimatedOpacity(
+              key: Key("yearBreakdownChartOpacity"),
               duration: Duration(milliseconds: 350),
               child: SizedBox(
                   height: 200,
                   width: 400,
-                  child: YearChart(spendingYear: year)),
+                  child: YearChart(
+                      spendingYear: year, key: Key("yearBreakdownChart"))),
               opacity: viewProvider.yearChartVisible ? 1.0 : 0,
             )
           ],

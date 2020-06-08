@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../helpers/constants.dart';
 
 void main() {
-  group("Month Card", () {
+  group("Month Card Widget", () {
     testWidgets("Month card shows correct month data",
         (WidgetTester tester) async {
       final month = Month(name: "November");

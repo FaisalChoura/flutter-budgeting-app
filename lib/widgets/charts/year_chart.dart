@@ -8,7 +8,7 @@ class YearChart extends StatelessWidget {
   // final List<charts.Series> seriesList;
   final SpendingYear spendingYear;
 
-  YearChart({@required this.spendingYear});
+  YearChart({@required this.spendingYear, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
