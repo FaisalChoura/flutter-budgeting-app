@@ -49,6 +49,7 @@ class YearTransactionsScreen extends StatelessWidget {
                           year: spendingYear,
                         )),
                     AnimatedContainer(
+                      key: Key("animatedYearChartContainer"),
                       duration: Duration(milliseconds: 350),
                       curve: Curves.fastOutSlowIn,
                       height: viewProvider.monthDataContainerheight == 0.0
@@ -168,6 +169,7 @@ class YearViewAppBar extends StatelessWidget with PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       actions: <Widget>[
         FlatButton(
+          key: Key("yearChartToggle"),
           onPressed: () =>
               Provider.of<YearScreenProvider>(context, listen: false)
                   .toggleChart(MediaQuery.of(context).size.height),
