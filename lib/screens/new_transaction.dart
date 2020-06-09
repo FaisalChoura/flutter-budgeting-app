@@ -27,7 +27,9 @@ class NewTransactionScreen extends StatelessWidget {
               ),
             ],
           ),
-          NewTransactionForm(),
+          NewTransactionForm(
+            key: Key("newTransactionForm"),
+          ),
         ],
       ),
     );
@@ -74,6 +76,7 @@ class _CategoriesListState extends State<CategoriesList> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: CategoryTile(
+              key: Key("${categories[index]}Tile"),
               index: index,
               name: categories[index],
               selectedColor: Color(0xFF36F1AC),
@@ -97,12 +100,14 @@ class CategoryTile extends StatelessWidget {
   final Color selectedShadowColor;
   final int index;
   CategoryTile(
-      {this.name,
+      {Key key,
+      this.name,
       this.onTap,
       this.selected = false,
       @required this.selectedColor,
       @required this.selectedShadowColor,
-      this.index});
+      this.index})
+      : super(key: key);
 
   String _categoryIcon() {
     switch (this.name) {
@@ -169,7 +174,7 @@ class CategoryTile extends StatelessWidget {
           onTap: () => onTap(index),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child: ListView(
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: 8),
@@ -199,10 +204,10 @@ class NewTransactionForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _NewTransactionFormState createState() => _NewTransactionFormState();
+  NewTransactionFormState createState() => NewTransactionFormState();
 }
 
-class _NewTransactionFormState extends State<NewTransactionForm> {
+class NewTransactionFormState extends State<NewTransactionForm> {
   final _formKey = GlobalKey<FormState>();
   final _dateController = TextEditingController();
   TransactionRec transaction = new TransactionRec();
@@ -247,6 +252,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
                           onTap: () => _selectDate(context),
                           child: AbsorbPointer(
                             child: TextFormField(
+                              key: Key("dateField"),
                               onSaved: (val) {
                                 transaction.date =
                                     Timestamp.fromDate(selectedDate);
@@ -273,6 +279,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
                         padding:
                             const EdgeInsets.only(top: 16, right: 16, left: 16),
                         child: TextFormField(
+                          key: Key("nameField"),
                           onSaved: (val) => transaction.name = val,
                           decoration: InputDecoration(
                             labelText: "Name",
@@ -292,6 +299,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
                         padding:
                             const EdgeInsets.only(top: 16, right: 16, left: 16),
                         child: TextFormField(
+                          key: Key("amountField"),
                           keyboardType: TextInputType.number,
                           onSaved: (val) => transaction.amount = num.parse(val),
                           decoration: InputDecoration(
@@ -321,6 +329,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: RaisedButton(
+                    key: Key("newTransactionButton"),
                     onPressed: () {
                       _submitForm(context);
                     },
@@ -358,13 +367,18 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
 
   // Add loading in button when clicked
   _submitForm(BuildContext context) {
-    final transactionsService = Provider.of<TransactionsService>(context);
+    final transactionsService =
+        Provider.of<TransactionsService>(context, listen: false);
     if (_formKey.currentState.validate() && transaction.category != "") {
       _formKey.currentState.save();
       transactionsService
           .addTransaction(
               Provider.of<FirebaseUser>(context, listen: false), transaction)
-          .then((value) => Navigator.of(context).pop());
+          .then(
+        (value) {
+          Navigator.of(context).pop();
+        },
+      );
     }
   }
 }

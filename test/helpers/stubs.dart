@@ -2,6 +2,7 @@ import 'package:budget_app/models/models.dart';
 import 'package:budget_app/providers/providers.dart';
 import 'package:budget_app/services/db.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -20,6 +21,17 @@ void stubTransactionsPerYear(TransactionsService transactionsService,
     (_) {
       return Stream<List<TransactionRec>>.value(
           [eatingOut1, eatingOut2, shopping]);
+    },
+  );
+}
+
+void stubAddTransaction(
+    TransactionsService transactionsService, FirebaseUserMock mockedUser) {
+  when(transactionsService.addTransaction(
+          mockedUser, argThat(isA<TransactionRec>())))
+      .thenAnswer(
+    (_) {
+      return Future.value();
     },
   );
 }

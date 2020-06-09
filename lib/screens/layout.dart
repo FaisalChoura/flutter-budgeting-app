@@ -105,6 +105,7 @@ class _AddTransactionFloatingButtonState
   Widget build(BuildContext context) {
     return showFab
         ? FloatingActionButton(
+            key: Key("newTransactionModalButton"),
             elevation: 0,
             backgroundColor: Color.fromARGB(255, 31, 109, 255),
             child: Center(

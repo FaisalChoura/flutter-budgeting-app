@@ -39,17 +39,17 @@ void main() {
               .monthDataContainerheight;
 
       expect(monthContainerHeightBeforeToggle,
-          isNot(equals(monthContainerHeightAfterToggle)));
+          lessThan(monthContainerHeightAfterToggle));
       expect(
           fontSizeBeforeToggle,
-          isNot(equals(
+          greaterThan(
               Provider.of<YearScreenProvider>(childContext, listen: false)
-                  .totalSpendingsPadding)));
+                  .totalSpendingsFontSize));
       expect(
           paddingBeforeToggle,
-          isNot(equals(
+          greaterThan(
               Provider.of<YearScreenProvider>(childContext, listen: false)
-                  .totalSpendingsPadding)));
+                  .totalSpendingsPadding));
       expect(
           Provider.of<YearScreenProvider>(childContext, listen: false)
               .yearChartVisible,
