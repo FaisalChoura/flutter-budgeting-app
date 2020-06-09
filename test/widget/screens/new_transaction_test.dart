@@ -20,12 +20,7 @@ void main() {
       expect(find.text("New Transaction"), findsOneWidget);
 
       await tester.tap(find.byKey(Key("GroceriesTile")));
-
-      await tester.tap(find.byKey(Key("dateField")));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text("12"));
-      await tester.tap(find.text("OK"));
-
+      await selectDate(tester);
       await tester.enterText(find.byKey(Key("amountField")), "40");
       await tester.enterText(find.byKey(Key("nameField")), "Waitrose");
       await tester.tap(find.byKey(Key("newTransactionButton")));
@@ -45,6 +40,32 @@ void main() {
       expect(find.text("New Transaction"), findsNothing);
     });
   });
+
+  testWidgets("Form field validations", (WidgetTester tester) async {
+    await pumpLayoutScreen(tester);
+
+    await tester.tap(find.byKey(Key("newTransactionModalButton")));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(Key("newTransactionButton")));
+    await tester.pump();
+
+    expect(find.text("Please select a category for your transaction"),
+        findsOneWidget);
+    expect(
+        find.text("Please enter a date for your transaction"), findsOneWidget);
+    expect(
+        find.text("Please enter a name for your transaction"), findsOneWidget);
+    expect(find.text("Please enter an amount for your transaction"),
+        findsOneWidget);
+  });
+}
+
+selectDate(WidgetTester tester) async {
+  await tester.tap(find.byKey(Key("dateField")));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text("12"));
+  await tester.tap(find.text("OK"));
 }
 
 pumpLayoutScreen(WidgetTester tester) async {

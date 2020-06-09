@@ -40,15 +40,17 @@ class CategoriesList extends StatefulWidget {
   final ValueChanged<String> onCategorySelected;
 
   CategoriesList({
+    Key key,
     this.onCategorySelected,
-  });
+  }) : super(key: key);
   @override
-  _CategoriesListState createState() => _CategoriesListState();
+  CategoriesListState createState() => CategoriesListState();
 }
 
 // CTN Creating category lists
-class _CategoriesListState extends State<CategoriesList> {
-  int _selectedIndex;
+class CategoriesListState extends State<CategoriesList> {
+  int _selectedIndex = -1;
+  bool _valid = true;
   final List<String> categories = [
     "Eating Out",
     "Shopping",
@@ -59,10 +61,21 @@ class _CategoriesListState extends State<CategoriesList> {
     "General"
   ];
 
+  bool validate() {
+    if (_selectedIndex == -1) {
+      setState(() {
+        _valid = false;
+      });
+      return false;
+    }
+    return true;
+  }
+
   _onSelected(int index) {
     widget.onCategorySelected(categories[index]);
     setState(() {
       _selectedIndex = index;
+      _valid = true;
     });
   }
 
@@ -70,23 +83,35 @@ class _CategoriesListState extends State<CategoriesList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 170,
-      child: ListView(
-        children: List.generate(categories.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CategoryTile(
-              key: Key("${categories[index]}Tile"),
-              index: index,
-              name: categories[index],
-              selectedColor: Color(0xFF36F1AC),
-              selectedShadowColor: Color(0x2636F1AC),
-              selected: _selectedIndex == index,
-              onTap: _onSelected,
+      height: _valid ? 170 : 180,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView(
+              children: List.generate(categories.length, (index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CategoryTile(
+                    key: Key("${categories[index]}Tile"),
+                    index: index,
+                    name: categories[index],
+                    selectedColor: Color(0xFF36F1AC),
+                    selectedShadowColor: Color(0x2636F1AC),
+                    selected: _selectedIndex == index,
+                    onTap: _onSelected,
+                  ),
+                );
+              }),
+              scrollDirection: Axis.horizontal,
             ),
-          );
-        }),
-        scrollDirection: Axis.horizontal,
+          ),
+          !_valid
+              ? Text(
+                  "Please select a category for your transaction",
+                  style: TextStyle(color: Theme.of(context).errorColor),
+                )
+              : SizedBox(),
+        ],
       ),
     );
   }
@@ -185,9 +210,11 @@ class CategoryTile extends StatelessWidget {
                     width: 85,
                   ),
                 ),
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Center(
+                  child: Text(
+                    name,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             ),
@@ -209,6 +236,7 @@ class NewTransactionForm extends StatefulWidget {
 
 class NewTransactionFormState extends State<NewTransactionForm> {
   final _formKey = GlobalKey<FormState>();
+  final _categoryListKey = GlobalKey<CategoriesListState>();
   final _dateController = TextEditingController();
   TransactionRec transaction = new TransactionRec();
   DateTime selectedDate = DateTime.now();
@@ -239,6 +267,7 @@ class NewTransactionFormState extends State<NewTransactionForm> {
               child: ListView(
                 children: <Widget>[
                   CategoriesList(
+                    key: _categoryListKey,
                     onCategorySelected: (String category) {
                       transaction.category = category;
                     },
@@ -369,7 +398,10 @@ class NewTransactionFormState extends State<NewTransactionForm> {
   _submitForm(BuildContext context) {
     final transactionsService =
         Provider.of<TransactionsService>(context, listen: false);
-    if (_formKey.currentState.validate() && transaction.category != "") {
+    final categoryListValid = _categoryListKey.currentState.validate();
+    final textEntriesValid = _formKey.currentState.validate();
+    final formValid = categoryListValid && textEntriesValid;
+    if (formValid) {
       _formKey.currentState.save();
       transactionsService
           .addTransaction(
