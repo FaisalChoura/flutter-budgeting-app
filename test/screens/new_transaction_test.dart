@@ -1,11 +1,10 @@
 import 'package:budget_app/screens/screens.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
-import '../../helpers/mocks.dart';
-import '../../helpers/stubs.dart';
+import '../helpers/mocks.dart';
+import '../helpers/stubs.dart';
 
 void main() {
   group("New Transaction Screen", () {

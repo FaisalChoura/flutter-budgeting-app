@@ -25,6 +25,27 @@ void stubTransactionsPerYear(TransactionsService transactionsService,
   );
 }
 
+void stubTransactionsPerMonth(TransactionsService transactionsService,
+    FirebaseUserMock mockedUser, num year, int month) {
+  when(transactionsService.streamTransactionsPerMonth(mockedUser, year, month))
+      .thenAnswer(
+    (_) {
+      return Stream<List<TransactionRec>>.value(
+          [eatingOut1, eatingOut2, shopping]);
+    },
+  );
+}
+
+void stubDeletedTransactionsPerMonth(TransactionsService transactionsService,
+    FirebaseUserMock mockedUser, num year, int month) {
+  when(transactionsService.streamTransactionsPerMonth(mockedUser, year, month))
+      .thenAnswer(
+    (_) {
+      return Stream<List<TransactionRec>>.value([eatingOut2, shopping]);
+    },
+  );
+}
+
 void stubAddTransaction(
     TransactionsService transactionsService, FirebaseUserMock mockedUser) {
   when(transactionsService.addTransaction(

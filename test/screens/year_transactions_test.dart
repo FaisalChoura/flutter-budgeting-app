@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
-import '../../helpers/mocks.dart';
-import '../../helpers/stubs.dart';
+import '../helpers/mocks.dart';
+import '../helpers/stubs.dart';
 
 void main() {
   group("Year Transaction Screen", () {

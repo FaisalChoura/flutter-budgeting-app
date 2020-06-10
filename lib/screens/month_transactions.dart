@@ -126,6 +126,7 @@ class TransactionTile extends StatelessWidget {
             style: TextStyle(fontSize: 16),
           ),
           PopupMenuButton<Settings>(
+            key: Key("${transaction.id}transactionPopupMenu"),
             child: Icon(Icons.more_vert),
             onSelected: (Settings selected) {
               transactionsService.deleteTransaction(transaction.id);
