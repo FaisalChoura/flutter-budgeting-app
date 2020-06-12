@@ -14,7 +14,6 @@ class MonthTransactionsScreen extends StatelessWidget {
   final String monthName;
 
   MonthTransactionsScreen({Key key, this.monthName}) : super(key: key);
-  // TODO fix grouping by
   @override
   Widget build(BuildContext context) {
     final transactionsService = Provider.of<TransactionsService>(context);

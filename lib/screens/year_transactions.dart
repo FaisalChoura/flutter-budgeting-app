@@ -21,7 +21,6 @@ class YearTransactionsScreen extends StatelessWidget {
             child: Text('Loading'),
           );
         }
-        // TODO fix dynamic data here.
         spendingYear.buildMonthsList(snap.data);
         return ChangeNotifierProvider<YearScreenProvider>(
           create: (_) => YearScreenProvider(),

@@ -45,7 +45,6 @@ class _LayoutScreenState extends State<LayoutScreen> {
     return Stack(children: children);
   }
 
-  // TODO look more into animations
   // This is route animation reference
   // Route _newTransactionRoute() {
   //   return PageRouteBuilder(

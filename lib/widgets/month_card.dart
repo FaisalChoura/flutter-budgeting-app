@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 class MonthCard extends StatelessWidget {
   final Month month;
 
-  // TODO Need to add key here
   MonthCard({
+    Key key,
     this.month,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

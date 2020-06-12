@@ -12,7 +12,7 @@ class TransactionsService {
   TransactionsService() {
     ref = _db.collection(path);
   }
-  // TODO is this the right way to handle the data.
+
   Stream<List<TransactionRec>> streamTransactionPerYear(
       FirebaseUser user, int year) {
     if (user != null) {
@@ -29,6 +29,7 @@ class TransactionsService {
             .toList();
       });
     }
+    return Stream.empty();
   }
 
   Stream<List<TransactionRec>> streamTransactionsPerMonth(
@@ -44,6 +45,7 @@ class TransactionsService {
               as TransactionRec)
           .toList());
     }
+    return Stream.empty();
   }
 
   Future deleteTransaction(String id) {

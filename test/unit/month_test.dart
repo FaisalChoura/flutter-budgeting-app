@@ -1,5 +1,4 @@
 import 'package:budget_app/models/models.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/constants.dart';

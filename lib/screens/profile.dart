@@ -2,7 +2,7 @@ import 'package:budget_app/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  AuthService auth = AuthService();
+  final AuthService auth = AuthService();
   ProfileScreen({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {

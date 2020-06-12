@@ -22,9 +22,7 @@ class YearScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /**
-   * triggers the visibility of the year chart
-   */
+  /// triggers the visibility of the year chart
   set yearChartVisible(bool v) {
     _visible = v;
     notifyListeners();

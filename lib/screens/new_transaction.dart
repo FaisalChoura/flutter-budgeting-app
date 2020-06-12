@@ -79,7 +79,6 @@ class CategoriesListState extends State<CategoriesList> {
     });
   }
 
-  // TODO fix padding layout in all of this file
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -356,7 +355,7 @@ class NewTransactionFormState extends State<NewTransactionForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
                   child: RaisedButton(
                     key: Key("newTransactionButton"),
                     onPressed: () {
